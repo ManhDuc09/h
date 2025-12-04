@@ -1,40 +1,36 @@
-🚀 HƯỚNG DẪN SETUP DỰ ÁN
-1️⃣ Frontend Setup
-➤ Di chuyển vào thư mục frontend
-cd react-vite-familyhealth
+1. Frontend Setup
+Chuyển vào thư mục frontend
+cd frontend
 
-➤ Tạo file .env
+Tạo file .env
 cp .env.example .env
 
-➤ Nội dung file .env
+Nội dung file .env
 VITE_API_URL=http://localhost:8080/familyhealth/api/v1
 
-➤ Cài đặt dependencies
+Cài dependencies
 npm install
 
-➤ Chạy dự án Frontend
+Chạy frontend
 npm run dev
 
-2️⃣ Backend Setup
-➤ Di chuyển vào thư mục backend
-cd familyhealth
+2. Backend Setup
+Chuyển vào thư mục backend
+cd backend
 
-➤ Tạo file .env
+Tạo file .env
 cp .env.example .env
 
-➤ Nội dung file .env
-
-(Thay bằng credentials thật của bạn)
-
+Nội dung file .env
 GOOGLE_CLIENT_ID=your-google-client-id
 GOOGLE_CLIENT_SECRET=your-google-secret
 OPENAI_API_KEY=your-openai-api-key
 
-➤ Cấu hình application.properties
+Cập nhật file application.properties
 spring.datasource.url=jdbc:mysql://localhost:3306/medical_app
 spring.datasource.username=root
 spring.datasource.password=your_password
 spring.jpa.hibernate.ddl-auto=update
 
-➤ Chạy Backend
+Chạy backend
 mvn spring-boot:run
