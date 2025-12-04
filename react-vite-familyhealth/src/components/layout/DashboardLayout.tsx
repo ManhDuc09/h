@@ -173,15 +173,6 @@ const DashboardLayout: React.FC = () => {
             ...(hasRole(user, "DOCTOR")
               ? [
                   {
-                    key: "12",
-                    icon: React.createElement(FaStethoscope),
-                    label: React.createElement(
-                      Link,
-                      { to: "/doctor/confirmed-appointments" },
-                      "Khám bệnh"
-                    ),
-                  },
-                  {
                     key: "10",
                     icon: React.createElement(UsergroupAddOutlined),
                     label: React.createElement(

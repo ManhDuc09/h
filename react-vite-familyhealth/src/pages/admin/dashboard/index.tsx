@@ -207,7 +207,7 @@ const AdminDashboard: React.FC = () => {
               </Title>
             </Space>
             <Typography.Text type="secondary">
-              Tổng quan hệ thống quản lý sức khỏe gia đình
+              <br />Tổng quan hệ thống quản lý hồ sơ y tế gia đình
             </Typography.Text>
           </div>
           <Space>
@@ -218,14 +218,14 @@ const AdminDashboard: React.FC = () => {
             >
               Làm mới
             </Button>
-            <Button
+            {/* <Button
               type="primary"
               icon={<DownloadOutlined />}
               onClick={() => message.success('Chức năng xuất báo cáo đang được phát triển')}
               style={{ backgroundColor: '#52c41a', borderColor: '#52c41a' }}
             >
               Xuất báo cáo
-            </Button>
+            </Button> */}
           </Space>
         </div>
       </Card>
@@ -233,14 +233,6 @@ const AdminDashboard: React.FC = () => {
       {/* Statistics Cards */}
       <StatsCards stats={stats} />
 
-      {/* Charts */}
-      <Charts
-        appointmentsByMonth={appointmentsByMonth}
-        appointmentsByStatus={appointmentsByStatus}
-      />
-
-      {/* Recent Activity */}
-      <RecentActivity activities={activities} />
     </div>
   );
 };
