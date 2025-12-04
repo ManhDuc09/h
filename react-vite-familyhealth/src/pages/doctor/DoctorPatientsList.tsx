@@ -3,6 +3,8 @@ import { Table, Button, Space, Tag, Card, Input, Select, Row, Col, message } fro
 import { SearchOutlined, EyeOutlined, UserOutlined } from "@ant-design/icons";
 import { useNavigate } from "react-router-dom";
 import dayjs from "dayjs";
+import { Modal } from "antd";
+import { MedicalResultForm } from "../../components/doctors/MedicalResultsForm";
 
 interface Patient {
   id: number;
@@ -23,6 +25,7 @@ interface Patient {
   };
   memberStatus: string;
 }
+
 
 const genderMap: Record<string, string> = {
   MALE: "Nam",
@@ -45,7 +48,24 @@ const DoctorPatientsList: React.FC = () => {
   const [genderFilter, setGenderFilter] = useState<string | undefined>(undefined);
   const [patients, setPatients] = useState<Patient[]>([]);
   const [loading, setLoading] = useState(true);
+  const [editingPatient, setEditingPatient] = useState<Patient | null>(null);
+  const [modalVisible, setModalVisible] = useState(false);
 
+
+  const [resultsModalVisible, setResultsModalVisible] = useState(false);
+  const [medicalResults, setMedicalResults] = useState<any[]>([]);
+
+  const loadMedicalResults = async (memberId: number) => {
+    try {
+      const res = await fetch(`http://localhost:8080/familyhealth/api/v1/medical_results/members/${memberId}`, {
+        headers: { 'Authorization': `Bearer ${localStorage.getItem('access_token')}` }
+      });
+      const data = await res.json();
+      if (data.code === 200) setMedicalResults(data.data);
+    } catch (err) {
+      message.error("Không tải được kết quả y tế");
+    }
+  };
   useEffect(() => {
     loadPatients();
   }, []);
@@ -150,13 +170,33 @@ const DoctorPatientsList: React.FC = () => {
       render: (_: any, record: Patient) => (
         <Button
           type="primary"
-          icon={<EyeOutlined />}
-          onClick={() => navigate(`/doctor/patient-history/${record.id}`)}
+          onClick={() => {
+            setEditingPatient(record);
+            setModalVisible(true);
+          }}
         >
-          Xem lịch sử
+          Thêm kết quả
         </Button>
       ),
     },
+    {
+      title: "Xem kết quả y tế",
+      key: "viewResults",
+      fixed: "right" as const,
+      width: 180,
+      render: (_: any, record: Patient) => (
+        <Button
+          type="default"
+          onClick={() => {
+            loadMedicalResults(record.id);
+            setResultsModalVisible(true);
+          }}
+        >
+          Xem tất cả
+        </Button>
+      ),
+    }
+
   ];
 
   return (
@@ -206,6 +246,62 @@ const DoctorPatientsList: React.FC = () => {
           pagination={{ pageSize: 10, showSizeChanger: true, showTotal: (total) => `Tổng ${total} bệnh nhân` }}
           scroll={{ x: 1200 }}
         />
+        <Modal
+          title={`Kết quả y tế - ${editingPatient?.fullname}`}
+          visible={modalVisible}
+          onCancel={() => setModalVisible(false)}
+          footer={null}
+        >
+          {editingPatient && (
+            <MedicalResultForm
+              patientId={editingPatient.id}
+              onSaved={() => {
+                setModalVisible(false);
+                loadPatients(); // refresh table if needed
+              }}
+            />
+          )}
+        </Modal>
+        <Modal
+          title={`Kết quả y tế - ${editingPatient?.fullname || ''}`}
+          visible={resultsModalVisible}
+          onCancel={() => setResultsModalVisible(false)}
+          footer={null}
+        >
+          {medicalResults.length === 0 ? (
+            <p>Không có kết quả y tế</p>
+          ) : (
+            <Table
+              rowKey="id"
+              dataSource={medicalResults}
+              pagination={{ pageSize: 5 }}
+              columns={[
+                {
+                  title: "Tên kết quả",
+                  dataIndex: "name",
+                  key: "name",
+                },
+                {
+                  title: "Chẩn đoán",
+                  dataIndex: "diagnose",
+                  key: "diagnose",
+                },
+                {
+                  title: "Ghi chú",
+                  dataIndex: "note",
+                  key: "note",
+                },
+                {
+                  title: "Ngày tạo",
+                  dataIndex: "createdAt",
+                  key: "createdAt",
+                  render: (date: string) => dayjs(date).format("DD/MM/YYYY"),
+                },
+              ]}
+            />
+          )}
+        </Modal>
+
       </Card>
     </div>
   );

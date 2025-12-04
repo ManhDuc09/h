@@ -20,6 +20,8 @@ import java.util.List;
 
 import static org.springframework.http.HttpStatus.NO_CONTENT;
 import static org.springframework.http.HttpStatus.OK;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 @RestController
 @RequiredArgsConstructor
@@ -29,8 +31,8 @@ public class MemberController {
     private final IUserService userService;
 
     @GetMapping("/get/{id}")
-    public ResponseEntity<?> getMember(@PathVariable Long id){
-        try{
+    public ResponseEntity<?> getMember(@PathVariable Long id) {
+        try {
 
             Member member = memberService.getMember(id);
 
@@ -38,16 +40,15 @@ public class MemberController {
                     .code(OK.value())
                     .message(MessageKey.GET_MEMBER_SUCCESS)
                     .data(member)
-                    .build()
-            );
-        }catch (Exception e){
+                    .build());
+        } catch (Exception e) {
             return ResponseEntity.badRequest().body(e.getMessage());
         }
     }
 
     @GetMapping("/members-medicalRecord/{id}")
-    public ResponseEntity<?> getMemberDetail(@PathVariable Long id){
-        try{
+    public ResponseEntity<?> getMemberDetail(@PathVariable Long id) {
+        try {
 
             MemberResponse member = this.memberService.getMemberDetail(id);
 
@@ -55,16 +56,15 @@ public class MemberController {
                     .code(OK.value())
                     .message(MessageKey.GET_MEMBER_SUCCESS)
                     .data(member)
-                    .build()
-            );
-        }catch (Exception e){
+                    .build());
+        } catch (Exception e) {
             return ResponseEntity.badRequest().body(e.getMessage());
         }
     }
 
     @PostMapping("/create")
     @PreAuthorize("hasAnyRole('ADMIN', 'PATIENT_HOUSEHOLD')")
-    public ResponseEntity<?> createMember(@Valid @RequestBody MemberRegisterDTO request){
+    public ResponseEntity<?> createMember(@Valid @RequestBody MemberRegisterDTO request) {
         try {
 
             Member member = memberService.createMember(request);
@@ -73,8 +73,7 @@ public class MemberController {
                     .code(OK.value())
                     .message(MessageKey.CREATE_MEMBER_SUCCESS)
                     .data(member.getId())
-                    .build()
-            );
+                    .build());
 
         } catch (Exception e) {
             return ResponseEntity.badRequest().body(e.getMessage());
@@ -83,8 +82,8 @@ public class MemberController {
 
     @PutMapping("/update/{id}")
     public ResponseEntity<?> updateMember(@PathVariable Long id,
-                                        @RequestBody MemberDTO memberDTO){
-        try{
+            @RequestBody MemberDTO memberDTO) {
+        try {
             Member member = memberService.updateMember(id, memberDTO);
             return ResponseEntity.ok("Update Member : " + member);
         } catch (Exception e) {
@@ -93,8 +92,8 @@ public class MemberController {
     }
 
     @DeleteMapping("/update/{id}")
-    public ResponseEntity<?> deleteMember(@PathVariable Long id){
-        try{
+    public ResponseEntity<?> deleteMember(@PathVariable Long id) {
+        try {
 
             memberService.deleteMember(id);
 
@@ -102,32 +101,33 @@ public class MemberController {
                     .code(NO_CONTENT.value())
                     .message(MessageKey.DELETED_MEMBERS_SUCCESS)
                     .data(null)
-                    .build()
-            );
-        }catch (Exception e) {
+                    .build());
+        } catch (Exception e) {
             return ResponseEntity.badRequest().body(e.getMessage());
         }
+    }
+
+    public String getMethodName(@RequestParam String param) {
+        return new String();
     }
 
     @GetMapping("/families")
     @PreAuthorize("hasAnyRole('ADMIN', 'PATIENT_HOUSEHOLD' ,'PATIENT')")
     public ResponseEntity<?> getMyFamilyMembers(@RequestParam(required = false) String[] search,
-                                                Pageable pageable) {
+            Pageable pageable) {
         try {
 
-            PageResponse<List<Member>> members = memberService.getFamilyMembers(search,pageable);
+            PageResponse<List<Member>> members = memberService.getFamilyMembers(search, pageable);
 
             return ResponseEntity.ok(ApiResponse.builder()
                     .code(OK.value())
                     .message(MessageKey.GET_ALL_MEMBERS_SUCCESS)
                     .data(members)
-                    .build()
-            );
+                    .build());
 
         } catch (RuntimeException e) {
             return ResponseEntity.status(404).body(e.getMessage());
         }
     }
-
 
 }

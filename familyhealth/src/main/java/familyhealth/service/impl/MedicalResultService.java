@@ -13,6 +13,9 @@ import familyhealth.service.IMedicalResultService;
 import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+
+import java.util.List;
+
 import org.springframework.stereotype.Service;
 
 @Service
@@ -68,5 +71,14 @@ public class MedicalResultService implements IMedicalResultService {
     public void deleteMedicalResult(Long id) {
         MedicalResult medicalResult = getMedicalResult(id);
         medicalResultRepository.delete(medicalResult);
+    }
+
+    @Override
+    public List<MedicalResult> getMedicalResultByMemberId(Long id) {
+        List<MedicalResult> results = medicalResultRepository.findByMemberId(id);
+        if (results.isEmpty()) {
+            throw new AppException(ErrorCode.MEDICAL_RESULT_NOT_EXISTED);
+        }
+        return results;
     }
 }

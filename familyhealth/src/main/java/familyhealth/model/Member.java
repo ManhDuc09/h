@@ -1,5 +1,6 @@
 package familyhealth.model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import familyhealth.common.MemberStatus;
 import jakarta.persistence.*;
@@ -30,6 +31,7 @@ public class Member extends Person {
 
     @ManyToOne()
     @JoinColumn(name = "household_id", nullable = false)
+    @JsonBackReference
     private Household household;
 
     @OneToOne(optional = true)
@@ -40,6 +42,7 @@ public class Member extends Person {
     @Enumerated(EnumType.STRING)
     private MemberStatus memberStatus = MemberStatus.ACTIVE;
     @OneToMany(mappedBy = "member", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonIgnore
     private List<MedicalResult> medicalResults;
 
 }

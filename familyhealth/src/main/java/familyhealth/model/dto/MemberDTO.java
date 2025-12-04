@@ -11,7 +11,7 @@ import lombok.experimental.SuperBuilder;
 @SuperBuilder
 @AllArgsConstructor
 @NoArgsConstructor
-public class MemberDTO extends PersonDTO{
+public class MemberDTO extends PersonDTO {
     @NotNull(message = "Relation không được null")
     @JsonProperty("relation")
     private Relation relation;

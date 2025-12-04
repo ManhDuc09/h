@@ -1,6 +1,9 @@
 package familyhealth.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+
 import jakarta.persistence.*;
 import lombok.*;
 import java.util.List;
@@ -35,6 +38,6 @@ public class Household {
     private Doctor doctor;
 
     @OneToMany(mappedBy = "household")
-    @JsonIgnore
+    @JsonManagedReference
     private List<Member> member;
 }
