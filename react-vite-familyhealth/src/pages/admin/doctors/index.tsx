@@ -86,7 +86,7 @@ const AdminDoctorsPage: React.FC = () => {
     try {
       setLoading(true);
       message.info('Đang xuất dữ liệu...');
-      
+
       const response = await fetch(
         'http://localhost:8080/familyhealth/api/v1/batch/export/doctors',
         {
@@ -347,6 +347,7 @@ const AdminDoctorsPage: React.FC = () => {
         onCancel={() => setIsModalOpen(false)}
         onFinish={handleCreateDoctor}
         loading={createLoading}
+
       />
 
       <DoctorDetailModal

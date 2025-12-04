@@ -68,7 +68,7 @@
             <staticText>
                 <reportElement style="SubTitle" x="60" y="0" width="200" height="15" uuid="c3d4e5f6-a7b8-4c5d-9e0f-1a2b3c4d5e6f"/>
                 <textElement>
-                    <font isBold="true" size="11"/>
+                    <font isBold="true" size="11" />
                 </textElement>
                 <text><![CDATA[FAMILY HEALTH CLINIC]]></text>
             </staticText>
@@ -87,7 +87,7 @@ Hotline: 1900-1234]]></text>
                 <textElement textAlignment="Right" verticalAlignment="Middle">
                     <font fontName="Arial" isBold="true"/>
                 </textElement>
-                <text><![CDATA[HỒ SƠ BỆNH ÁN]]></text>
+                <text><![CDATA[Medical Results]]></text>
             </staticText>
             <staticText>
                 <reportElement style="SubTitle" x="280" y="40" width="275" height="20" forecolor="#999999"
@@ -111,7 +111,7 @@ Hotline: 1900-1234]]></text>
         <band height="120" splitType="Stretch">
             <staticText>
                 <reportElement style="SectionHeader" x="0" y="0" width="555" height="25" uuid="b8c9d0e1-f2a3-4b5c-4d5e-6f7a8b9c0d1e"/>
-                <text><![CDATA[THÔNG TIN BỆNH NHÂN / PATIENT INFO]]></text>
+                <text><![CDATA[ PATIENT INFO]]></text>
             </staticText>
 
             <frame>
