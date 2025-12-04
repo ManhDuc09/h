@@ -4,9 +4,6 @@ import {
   UserOutlined,
   TeamOutlined,
   MedicineBoxOutlined,
-  CalendarOutlined,
-  FileTextOutlined,
-  ClockCircleOutlined,
 } from "@ant-design/icons";
 
 interface StatsCardsProps {
@@ -14,9 +11,6 @@ interface StatsCardsProps {
     totalUsers: number;
     totalDoctors: number;
     totalPatients: number;
-    totalAppointments: number;
-    newAppointmentsToday: number;
-    newRecordsToday: number;
   };
 }
 
@@ -50,36 +44,6 @@ const StatsCards: React.FC<StatsCardsProps> = ({ stats }) => {
             value={stats.totalPatients}
             prefix={<TeamOutlined />}
             valueStyle={{ color: "#eb2f96" }}
-          />
-        </Card>
-      </Col>
-      <Col xs={24} sm={12} lg={8}>
-        <Card>
-          <Statistic
-            title="Tổng lịch hẹn"
-            value={stats.totalAppointments}
-            prefix={<CalendarOutlined />}
-            valueStyle={{ color: "#722ed1" }}
-          />
-        </Card>
-      </Col>
-      <Col xs={24} sm={12} lg={8}>
-        <Card>
-          <Statistic
-            title="Lịch hẹn hôm nay"
-            value={stats.newAppointmentsToday}
-            prefix={<ClockCircleOutlined />}
-            valueStyle={{ color: "#faad14" }}
-          />
-        </Card>
-      </Col>
-      <Col xs={24} sm={12} lg={8}>
-        <Card>
-          <Statistic
-            title="Hồ sơ mới hôm nay"
-            value={stats.newRecordsToday}
-            prefix={<FileTextOutlined />}
-            valueStyle={{ color: "#13c2c2" }}
           />
         </Card>
       </Col>

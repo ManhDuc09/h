@@ -53,11 +53,13 @@ CREATE TABLE members(
 
 CREATE TABLE doctors(
     id INT PRIMARY KEY AUTO_INCREMENT,
-    expertise ENUM('TIM_MACH','HO_HAP','TIEU_HOA','THAN_KINH','TAI_MUI_HONG','MAT','DA_LIEU','PHU_KHOA') DEFAULT '',
+    expertise ENUM('TIM_MACH','HO_HAP','TIEU_HOA','THAN_KINH','TAI_MUI_HONG','MAT','DA_LIEU','PHU_KHOA') 
+        DEFAULT 'DA_LIEU',
     bio VARCHAR(255) DEFAULT '',
     user_id INT,
     FOREIGN KEY (user_id) REFERENCES users(id)
-); 
+);
+
 
 CREATE TABLE appointments(
     id INT PRIMARY KEY AUTO_INCREMENT,
@@ -87,5 +89,6 @@ CREATE TABLE payments (
     transaction_code VARCHAR(100) UNIQUE,
     paid_at DATETIME,
     created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+    medical_result_id INT,
     FOREIGN KEY (medical_result_id) REFERENCES medical_result(id)
 );
