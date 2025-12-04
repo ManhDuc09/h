@@ -21,6 +21,7 @@ import { setLogoutAction } from "../../redux/slice/accountSlice";
 import { authService } from "../../services/authService";
 import "../../styles/layout.scss";
 import { hasRole } from "../../config/permissions";
+import logo from "../../assets/logo.png"
 
 const { Header, Sider, Content } = Layout;
 
@@ -94,14 +95,23 @@ const DashboardLayout: React.FC = () => {
             textAlign: "center",
             fontWeight: 700,
             fontSize: 24,
-            display: "flex",
+            display: "",
             alignItems: "center",
             justifyContent: "center",
             gap: 8,
           }}
         >
-          <FaHeartbeat style={{ color: "#ff4d4f", fontSize: 28 }} />
-          {!collapsed && "FamilyHealth"}
+          <img
+            src={logo}
+            alt="Logo"
+            style={{
+              width: collapsed ? 40 : 45,
+              height: "auto",
+              transition: "0.2s",
+            }}
+          />
+
+          {!collapsed && "FamilyMedicalRecords"}
         </div>
         <Menu
           theme="light"
@@ -163,15 +173,6 @@ const DashboardLayout: React.FC = () => {
             ...(hasRole(user, "DOCTOR")
               ? [
                   {
-                    key: "3",
-                    icon: React.createElement(ScheduleOutlined),
-                    label: React.createElement(
-                      Link,
-                      { to: "/doctor/appointments" },
-                      "Lịch hẹn"
-                    ),
-                  },
-                  {
                     key: "12",
                     icon: React.createElement(FaStethoscope),
                     label: React.createElement(
@@ -187,15 +188,6 @@ const DashboardLayout: React.FC = () => {
                       Link,
                       { to: "/doctor/patients" },
                       "Danh sách bệnh nhân"
-                    ),
-                  },
-                  {
-                    key: "11",
-                    icon: React.createElement(HistoryOutlined),
-                    label: React.createElement(
-                      Link,
-                      { to: "/doctor/medical-history" },
-                      "Lịch sử khám bệnh"
                     ),
                   },
                 ]
@@ -218,33 +210,7 @@ const DashboardLayout: React.FC = () => {
                       "Thành viên"
                     ),
                   },
-                  {
-                    key: "2",
-                    icon: React.createElement(ScheduleOutlined),
-                    label: React.createElement(
-                      Link,
-                      { to: "/appointments" },
-                      "Lịch hẹn"
-                    ),
-                  },
-                  {
-                    key: "5",
-                    icon: React.createElement(MedicineBoxOutlined),
-                    label: React.createElement(
-                      Link,
-                      { to: "/doctors" },
-                      "Danh sách bác sĩ"
-                    ),
-                  },
-                  {
-                    key: "8",
-                    icon: React.createElement(HistoryOutlined),
-                    label: React.createElement(
-                      Link,
-                      { to: "/history" },
-                      "Kết quả khám"
-                    ),
-                  },
+                  // // 
                   {
                     key: "13",
                     icon: React.createElement(FileTextOutlined),
