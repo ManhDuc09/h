@@ -12,7 +12,6 @@ import familyhealth.model.dto.DoctorDTO;
 import familyhealth.model.dto.UserDTO;
 import familyhealth.model.dto.request.DoctorRegisterDTO;
 import familyhealth.model.dto.response.PageResponse;
-import familyhealth.repository.AppointmentRepository;
 import familyhealth.repository.DoctorRepository;
 import familyhealth.repository.MemberRepository;
 import familyhealth.repository.RoleRepository;

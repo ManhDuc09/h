@@ -1,6 +1,5 @@
 package familyhealth.service.impl;
 
-import familyhealth.model.Appointment;
 import familyhealth.model.Doctor;
 import familyhealth.model.MedicalResult;
 import familyhealth.model.Member;

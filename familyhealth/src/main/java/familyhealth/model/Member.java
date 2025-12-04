@@ -41,7 +41,5 @@ public class Member extends Person {
     private MemberStatus memberStatus = MemberStatus.ACTIVE;
     @OneToMany(mappedBy = "member", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<MedicalResult> medicalResults;
-    @OneToMany(mappedBy = "member")
-    @JsonIgnore
-    private List<Appointment> appointments;
+
 }
