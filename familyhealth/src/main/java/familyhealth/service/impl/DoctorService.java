@@ -14,6 +14,7 @@ import familyhealth.model.dto.request.DoctorRegisterDTO;
 import familyhealth.model.dto.response.PageResponse;
 import familyhealth.repository.AppointmentRepository;
 import familyhealth.repository.DoctorRepository;
+import familyhealth.repository.MemberRepository;
 import familyhealth.repository.RoleRepository;
 import familyhealth.repository.UserRepository;
 import familyhealth.repository.specification.DoctorSpecification;
@@ -29,6 +30,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import familyhealth.model.User;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -43,12 +45,12 @@ public class DoctorService implements IDoctorService {
     private final UserService userService;
     private final RoleRepository roleRepository;
     private final PasswordEncoder passwordEncoder;
-    private final AppointmentRepository appointmentRepository;
+    private final MemberRepository memberRepository;
 
     @Override
     public Doctor getDoctor(Long id) {
         return doctorRepository.findById(id)
-                .orElseThrow(()-> new AppException(ErrorCode.DOCTOR_NOT_FOUND));
+                .orElseThrow(() -> new AppException(ErrorCode.DOCTOR_NOT_FOUND));
     }
 
     @Override
@@ -61,7 +63,7 @@ public class DoctorService implements IDoctorService {
         }
 
         Role role = roleRepository.findByName(DOCTOR)
-                .orElseThrow(()-> new AppException(ErrorCode.ROLE_NOT_EXISTED));
+                .orElseThrow(() -> new AppException(ErrorCode.ROLE_NOT_EXISTED));
 
         User user = UserMapper.convertToUser(request, role);
         user.setPassword(passwordEncoder.encode(request.getPassword()));
@@ -80,21 +82,17 @@ public class DoctorService implements IDoctorService {
 
     @Override
     public List<Member> getPatients() {
-
         String currentPhone = SecurityUtils.getCurrentLogin()
                 .orElseThrow(() -> new AppException(ErrorCode.UNAUTHORIZED));
 
         User currentUser = userService.getUserByPhone(currentPhone);
 
-        List<Member> members = null;
-
-        if (currentUser.getDoctor() != null){
-            Long id = currentUser.getDoctor().getId();
-            members = appointmentRepository.findPatientsByDoctorId(id);
+        if (currentUser.getDoctor() == null) {
+            return Collections.emptyList(); // not a doctor
         }
 
-        return members;
-
+        Long doctorId = currentUser.getDoctor().getId();
+        return memberRepository.findAllByHouseholdDoctorId(doctorId);
     }
 
     @Override

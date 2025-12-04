@@ -39,12 +39,11 @@ public class EmailService implements IEmailService {
     @Async
     public void sendMedicalResultEmail(MedicalResult medicalResult) {
         try {
-            Appointment appointment = medicalResult.getAppointment();
-            Member member = appointment.getMember();
-            Doctor doctor = appointment.getDoctor();
+            Member member = medicalResult.getMember();
+            Doctor doctor = member.getHousehold().getDoctor();
 
             String memberEmail = member.getEmail();
-            
+
             if (memberEmail == null || memberEmail.isEmpty()) {
                 log.warn("Member {} does not have email address, skipping email notification", member.getFullname());
                 return;
@@ -55,19 +54,21 @@ public class EmailService implements IEmailService {
             variables.put("memberName", member.getFullname());
             variables.put("doctorName", doctor.getFullname());
             variables.put("doctorExpertise", getExpertiseVietnamese(doctor.getExpertise().toString()));
-            variables.put("appointmentDate", appointment.getTime().format(DateTimeFormatter.ofPattern("dd/MM/yyyy")));
+            variables.put("appointmentDate",
+                    medicalResult.getCreatedAt().format(DateTimeFormatter.ofPattern("dd/MM/yyyy")));
+
             variables.put("resultName", medicalResult.getName());
             variables.put("diagnose", medicalResult.getDiagnose());
             variables.put("note", medicalResult.getNote());
-            variables.put("totalMoney", formatCurrency(medicalResult.getTotalMoney()));
-            variables.put("createdAt", medicalResult.getCreatedAt().format(DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm")));
+            variables.put("createdAt",
+                    medicalResult.getCreatedAt().format(DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm")));
 
             String subject = "Kết quả khám bệnh - " + medicalResult.getName();
-            
+
             sendHtmlEmail(memberEmail, subject, "medical-result-email", variables);
-            
+
             log.info("Successfully sent medical result email to: {}", memberEmail);
-            
+
         } catch (Exception e) {
             log.error("Failed to send medical result email: {}", e.getMessage(), e);
         }
@@ -82,10 +83,10 @@ public class EmailService implements IEmailService {
             message.setTo(to);
             message.setSubject(subject);
             message.setText(content);
-            
+
             mailSender.send(message);
             log.info("Simple email sent to: {}", to);
-            
+
         } catch (Exception e) {
             log.error("Failed to send simple email to {}: {}", to, e.getMessage(), e);
         }

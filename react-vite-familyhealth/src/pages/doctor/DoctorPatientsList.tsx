@@ -64,7 +64,7 @@ const DoctorPatientsList: React.FC = () => {
       }
 
       const data = await response.json();
-      
+
       if (data.code === 200 && data.data) {
         setPatients(data.data);
       } else {
@@ -97,14 +97,14 @@ const DoctorPatientsList: React.FC = () => {
         </Space>
       ),
     },
-    { 
-      title: "CCCD", 
-      dataIndex: "idCard", 
-      key: "idCard" 
+    {
+      title: "CCCD",
+      dataIndex: "idCard",
+      key: "idCard"
     },
-    { 
-      title: "Ngày sinh", 
-      dataIndex: "dateOfBirth", 
+    {
+      title: "Ngày sinh",
+      dataIndex: "dateOfBirth",
       key: "dateOfBirth",
       render: (date: string) => dayjs(date).format('DD/MM/YYYY')
     },
@@ -114,23 +114,23 @@ const DoctorPatientsList: React.FC = () => {
       key: "gender",
       render: (g: string) => <Tag color={g === "MALE" ? "blue" : "pink"}>{genderMap[g] || g}</Tag>,
     },
-    { 
-      title: "Địa chỉ", 
-      dataIndex: "address", 
-      key: "address", 
-      ellipsis: true 
+    {
+      title: "Địa chỉ",
+      dataIndex: "address",
+      key: "address",
+      ellipsis: true
     },
-    { 
-      title: "BHYT", 
-      dataIndex: "bhyt", 
-      key: "bhyt", 
-      render: (v: string) => v || <Tag color="orange">Chưa có</Tag> 
+    {
+      title: "BHYT",
+      dataIndex: "bhyt",
+      key: "bhyt",
+      render: (v: string) => v || <Tag color="orange">Chưa có</Tag>
     },
-    { 
-      title: "Quan hệ", 
-      dataIndex: "relation", 
-      key: "relation", 
-      render: (r: string) => <Tag color="green">{relationMap[r] || r}</Tag> 
+    {
+      title: "Quan hệ",
+      dataIndex: "relation",
+      key: "relation",
+      render: (r: string) => <Tag color="green">{relationMap[r] || r}</Tag>
     },
     {
       title: "Trạng thái",
@@ -148,9 +148,9 @@ const DoctorPatientsList: React.FC = () => {
       fixed: "right" as const,
       width: 150,
       render: (_: any, record: Patient) => (
-        <Button 
-          type="primary" 
-          icon={<EyeOutlined />} 
+        <Button
+          type="primary"
+          icon={<EyeOutlined />}
           onClick={() => navigate(`/doctor/patient-history/${record.id}`)}
         >
           Xem lịch sử

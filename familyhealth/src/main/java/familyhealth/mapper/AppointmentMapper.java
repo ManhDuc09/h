@@ -8,7 +8,8 @@ import familyhealth.model.dto.response.AppointmentResponse;
 
 public class AppointmentMapper {
     public static Appointment convertToAppointment(AppointmentDTO dto, Doctor doctor, Member member) {
-        if (dto == null) return null;
+        if (dto == null)
+            return null;
 
         return Appointment.builder()
                 .time(dto.getTime())
@@ -21,8 +22,8 @@ public class AppointmentMapper {
     }
 
     public static AppointmentResponse convertToAppointmentResponse(Appointment appointment) {
-        if (appointment == null) return null;
-
+        if (appointment == null)
+            return null;
 
         AppointmentResponse.Doctor doctor = null;
         if (appointment.getDoctor() != null) {
@@ -30,7 +31,8 @@ public class AppointmentMapper {
             doctor.setId(appointment.getDoctor().getId());
             doctor.setFullName(appointment.getDoctor().getFullname());
             doctor.setExpertise(appointment.getDoctor().getExpertise() != null
-                    ? appointment.getDoctor().getExpertise().name() : null);
+                    ? appointment.getDoctor().getExpertise().name()
+                    : null);
         }
 
         AppointmentResponse.Member member = null;
@@ -39,7 +41,8 @@ public class AppointmentMapper {
             member.setId(appointment.getMember().getId());
             member.setFullName(appointment.getMember().getFullname());
             member.setRelation(appointment.getMember().getRelation() != null
-                    ? appointment.getMember().getRelation().name() : null);
+                    ? appointment.getMember().getRelation().name()
+                    : null);
             member.setBhyt(appointment.getMember().getBhyt());
         }
 
@@ -49,9 +52,10 @@ public class AppointmentMapper {
             medicalResult.setId(appointment.getMedicalResult().getId());
             medicalResult.setName(appointment.getMedicalResult().getName());
             medicalResult.setDiagnose(appointment.getMedicalResult().getDiagnose() != null
-                    ? appointment.getMedicalResult().getDiagnose() : null);
+                    ? appointment.getMedicalResult().getDiagnose()
+                    : null);
             medicalResult.setNote(appointment.getMedicalResult().getNote());
-            medicalResult.setTotalMoney(appointment.getMedicalResult().getTotalMoney());
+
         }
 
         AppointmentResponse response = new AppointmentResponse();

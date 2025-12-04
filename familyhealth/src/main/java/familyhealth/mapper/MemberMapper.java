@@ -17,9 +17,9 @@ import java.util.List;
 @AllArgsConstructor
 public class MemberMapper {
 
-
     public static Member convertToMember(MemberDTO dto, User user, Household household) {
-        if (dto == null) return null;
+        if (dto == null)
+            return null;
 
         return Member.builder()
                 .fullname(dto.getFullname())
@@ -35,11 +35,12 @@ public class MemberMapper {
                 .build();
     }
 
-    public static Member convertToMember(UserRequestDTO request , Household household , User user) {
+    public static Member convertToMember(UserRequestDTO request, Household household, User user) {
 
         UserRequestDTO.MemberInfo dto = request.getMemberInfo();
 
-        if (dto == null) return null;
+        if (dto == null)
+            return null;
 
         return Member.builder()
                 .fullname(dto.getFullName())
@@ -57,7 +58,8 @@ public class MemberMapper {
 
     public static Member convertToMember(MemberRegisterDTO request, User newUser, Household household) {
 
-        if (request == null) return null;
+        if (request == null)
+            return null;
 
         return Member.builder()
                 .fullname(request.getFullname())
@@ -84,21 +86,21 @@ public class MemberMapper {
         response.setEmail(member.getEmail());
         response.setBhyt(member.getBhyt());
 
-        List<MemberResponse.MedicalResultDTO> results = member.getAppointments()
+        // Map medical results
+        List<MemberResponse.MedicalResultDTO> results = member.getMedicalResults() // use getMedicalResults() from
+                                                                                   // Member
                 .stream()
-                .filter(a -> a.getMedicalResult() != null)
-                .map(a -> {
+                .map(mr -> {
                     MemberResponse.MedicalResultDTO dto = new MemberResponse.MedicalResultDTO();
-                    dto.setId(a.getMedicalResult().getId());
-                    dto.setName(a.getMedicalResult().getName());
-                    dto.setDiagnose(a.getMedicalResult().getDiagnose());
-                    dto.setNote(a.getMedicalResult().getNote());
-                    dto.setTotalMoney(a.getMedicalResult().getTotalMoney());
-                    dto.setCreatedAt(a.getMedicalResult().getCreatedAt());
-                    dto.setAppointmentTime(a.getTime());
-                    dto.setDoctorName(a.getDoctor().getFullname());
+                    dto.setId(mr.getId());
+                    dto.setName(mr.getName());
+                    dto.setDiagnose(mr.getDiagnose());
+                    dto.setNote(mr.getNote());
+                    dto.setCreatedAt(mr.getCreatedAt());
+                    dto.setDoctorName(mr.getMember().getHousehold().getDoctor().getFullname()); // if needed
                     return dto;
-                }).toList();
+                })
+                .toList();
 
         response.setMedicalResults(results);
 
@@ -106,4 +108,3 @@ public class MemberMapper {
     }
 
 }
-

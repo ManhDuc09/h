@@ -1,13 +1,13 @@
 package familyhealth.service.impl;
 
-import familyhealth.common.AppointmentStatus;
 import familyhealth.exception.AppException;
 import familyhealth.exception.ErrorCode;
 import familyhealth.mapper.MedicalResultMapper;
-import familyhealth.model.Appointment;
 import familyhealth.model.MedicalResult;
+import familyhealth.model.Member;
 import familyhealth.model.dto.MedicalResultDTO;
 import familyhealth.repository.MedicalResultRepository;
+import familyhealth.repository.MemberRepository;
 import familyhealth.service.IEmailService;
 import familyhealth.service.IMedicalResultService;
 import jakarta.transaction.Transactional;
@@ -19,40 +19,49 @@ import org.springframework.stereotype.Service;
 @AllArgsConstructor
 @Slf4j
 public class MedicalResultService implements IMedicalResultService {
+
     private final MedicalResultRepository medicalResultRepository;
-    private final AppointmentService appointmentService;
+    private final MemberRepository memberRepository; // new
     private final IEmailService emailService;
 
     @Override
     public MedicalResult getMedicalResult(Long id) {
         return medicalResultRepository.findById(id)
-                .orElseThrow(()-> new AppException(ErrorCode.MEDICAL_RESULT_NOT_EXISTED));
+                .orElseThrow(() -> new AppException(ErrorCode.MEDICAL_RESULT_NOT_EXISTED));
     }
 
     @Override
     @Transactional
     public MedicalResult createMedicalResult(MedicalResultDTO medicalResultDTO) {
 
-        Appointment appointment = appointmentService.getAppointment(medicalResultDTO.getAppointmentId());
+        // Get member
+        Member member = memberRepository.findById(medicalResultDTO.getMemberId())
+                .orElseThrow(() -> new AppException(ErrorCode.MEMBER_NOT_FOUND));
 
-        appointment.setStatus(AppointmentStatus.COMPLETED);
-
-        MedicalResult medicalResult = MedicalResultMapper.convertToMedicalResult(medicalResultDTO,appointment);
+        // Map DTO to entity
+        MedicalResult medicalResult = MedicalResultMapper.convertToMedicalResult(medicalResultDTO, member);
 
         MedicalResult savedResult = medicalResultRepository.save(medicalResult);
-        
-        // Gửi email thông báo kết quả khám bệnh (async)
-        log.info("Sending medical result email to member: {}", appointment.getMember().getFullname());
+
+        // Optionally send email
+        log.info("Sending medical result email to member: {}", member.getFullname());
         emailService.sendMedicalResultEmail(savedResult);
 
         return savedResult;
     }
 
     @Override
+    @Transactional
     public MedicalResult updateMedicalResult(Long id, MedicalResultDTO medicalResultDTO) {
-        MedicalResult medicalResultexisting = getMedicalResult(id);
-        MedicalResult medicalResult = MedicalResultMapper.convertToMedicalResult(medicalResultDTO, medicalResultexisting.getAppointment());
-        return medicalResultRepository.save(medicalResult);
+        MedicalResult existingResult = getMedicalResult(id);
+
+        Member member = existingResult.getMember();
+
+        MedicalResult updatedResult = MedicalResultMapper.convertToMedicalResult(medicalResultDTO, member);
+
+        updatedResult.setId(existingResult.getId()); // keep the same ID
+
+        return medicalResultRepository.save(updatedResult);
     }
 
     @Override

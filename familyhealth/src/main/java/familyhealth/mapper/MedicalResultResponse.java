@@ -1,44 +1,20 @@
 package familyhealth.mapper;
 
-import lombok.Getter;
-import lombok.Setter;
-
+import lombok.Data;
 import java.time.LocalDateTime;
 
-@Getter
-@Setter
+@Data
 public class MedicalResultResponse {
 
     private Long id;
     private String name;
-    private String diagnose;
     private String note;
-    private Float totalMoney;
+    private String diagnose;
     private LocalDateTime createdAt;
-    private Appointment appointment;
 
-    @Getter
-    @Setter
-    public static class Appointment {
-        private Long id;
-        private LocalDateTime time;
-        private String status;
-        private String note;
-        private String location;
-        private Doctor doctor;
-        private Member member;
-    }
+    private Member member; // Nested member info
 
-    @Getter
-    @Setter
-    public static class Doctor {
-        private Long id;
-        private String fullname;
-        private String expertise;
-    }
-
-    @Getter
-    @Setter
+    @Data
     public static class Member {
         private Long id;
         private String fullname;

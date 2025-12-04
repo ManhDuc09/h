@@ -16,13 +16,13 @@ import java.util.List;
 @SuperBuilder
 @AllArgsConstructor
 @NoArgsConstructor
-public class Member extends Person{
+public class Member extends Person {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @Enumerated(EnumType.STRING)
-    @Column(name = "relation",nullable = false)
+    @Column(name = "relation", nullable = false)
     private Relation relation = Relation.CHU_HO;
 
     @Column(length = 12, nullable = false)
@@ -32,14 +32,15 @@ public class Member extends Person{
     @JoinColumn(name = "household_id", nullable = false)
     private Household household;
 
-    @OneToOne(optional = true )
+    @OneToOne(optional = true)
     @JoinColumn(name = "user_id", nullable = true)
     @JsonIgnore
     private User user;
 
     @Enumerated(EnumType.STRING)
     private MemberStatus memberStatus = MemberStatus.ACTIVE;
-
+    @OneToMany(mappedBy = "member", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<MedicalResult> medicalResults;
     @OneToMany(mappedBy = "member")
     @JsonIgnore
     private List<Appointment> appointments;

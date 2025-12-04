@@ -13,27 +13,25 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 @NoArgsConstructor
 public class MedicalResult {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @Column(nullable = false, length = 100)
-    private String name;
+    private String name; // e.g., "Blood Test", "X-Ray"
 
     @Column(nullable = false, length = 200)
-    private String note;
+    private String note; // doctor's notes
 
     @Column(nullable = false, length = 200)
-    private String diagnose;
-
-    @Column(name = "total_money", nullable = false)
-    private Float totalMoney;
+    private String diagnose; // diagnosis
 
     @CreationTimestamp
     @Column(name = "created_at", updatable = false)
     private LocalDateTime createdAt;
 
-    @OneToOne(optional = false)
-    @JoinColumn(name = "appointment_id", nullable = false)
-    private Appointment appointment;
+    @ManyToOne(optional = false)
+    @JoinColumn(name = "member_id", nullable = false)
+    private Member member;
 }

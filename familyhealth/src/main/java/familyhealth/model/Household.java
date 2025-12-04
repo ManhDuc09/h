@@ -1,10 +1,8 @@
 package familyhealth.model;
 
-
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
-
 import java.util.List;
 
 @Entity
@@ -14,7 +12,8 @@ import java.util.List;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class Household{
+public class Household {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -29,6 +28,11 @@ public class Household{
 
     @Column(name = "is_active", nullable = false)
     private Boolean isActive = true;
+
+    // NEW: Assign a doctor to this household
+    @ManyToOne
+    @JoinColumn(name = "doctor_id")
+    private Doctor doctor;
 
     @OneToMany(mappedBy = "household")
     @JsonIgnore
