@@ -24,6 +24,7 @@ import {
   CloseCircleOutlined,
   EyeOutlined,
   DownloadOutlined,
+  UserAddOutlined,
 } from "@ant-design/icons";
 
 interface Member {
@@ -61,6 +62,14 @@ const HouseholdsPage: React.FC = () => {
   const [searchText, setSearchText] = useState("");
   const [selectedHousehold, setSelectedHousehold] = useState<Household | null>(null);
   const [modalVisible, setModalVisible] = useState(false);
+
+  const [assignModalOpen, setAssignModalOpen] = useState(false);
+  const [currentFamily, setCurrentFamily] = useState<Household | null>(null);
+  const [doctors, setDoctors] = useState<Doctor[]>([]);
+  const [doctorLoading, setDoctorLoading] = useState(false);
+  const [assigning, setAssigning] = useState(false);
+  const [selectedDoctor, setSelectedDoctor] = useState<Doctor | null>(null);
+  const [doctorSearchText, setDoctorSearchText] = useState("");
 
   useEffect(() => {
     loadHouseholds();
@@ -182,7 +191,7 @@ const HouseholdsPage: React.FC = () => {
     {
       title: "Thành viên hoạt động",
       key: "activeMembers",
-      width: 160,
+      width: 120,
       align: "center",
       render: (_, record) => {
         const activeCount = record.members.filter(
@@ -198,17 +207,25 @@ const HouseholdsPage: React.FC = () => {
     {
       title: "Thao tác",
       key: "actions",
-      width: 120,
+      width: 160,
       align: "center",
       render: (_, record) => (
-        <Button
-          type="primary"
-          icon={<EyeOutlined />}
-          size="small"
-          onClick={() => handleViewMembers(record)}
-        >
-          Xem
-        </Button>
+        <Space>
+          <Button
+            type="primary"
+            icon={<EyeOutlined />}
+            size="small"
+            onClick={() => handleViewMembers(record)}
+          >
+          </Button>
+          <Button
+            type="default"
+            size="small"
+            icon={<UserAddOutlined />}
+            onClick={() => handleAddDoctor(record)}
+            >
+          </Button>
+    </Space>
       ),
     },
   ];

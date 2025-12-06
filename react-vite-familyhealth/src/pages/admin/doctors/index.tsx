@@ -9,6 +9,7 @@ import {
   Input,
   Typography,
   Breadcrumb,
+  Drawer,
 } from "antd";
 import {
   PlusOutlined,
@@ -18,6 +19,8 @@ import {
   MedicineBoxOutlined,
   ControlOutlined,
   DownloadOutlined,
+  UserAddOutlined,
+  CheckOutlined,
 } from "@ant-design/icons";
 import type { ColumnsType } from "antd/es/table";
 import dayjs from "dayjs";
@@ -234,7 +237,7 @@ const AdminDoctorsPage: React.FC = () => {
             size="small"
             onClick={() => handleViewDetail(record)}
           >
-            Chi tiết
+            Chi Tiết
           </Button>
         </Space>
       ),

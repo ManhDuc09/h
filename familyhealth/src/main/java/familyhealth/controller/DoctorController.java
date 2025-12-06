@@ -6,6 +6,7 @@ import familyhealth.utils.MessageKey;
 import familyhealth.mapper.DoctorMapper;
 import familyhealth.model.Doctor;
 import familyhealth.model.dto.DoctorDTO;
+import familyhealth.model.dto.HouseholdDTO;
 import familyhealth.model.dto.request.DoctorRegisterDTO;
 import familyhealth.model.dto.response.ApiResponse;
 import familyhealth.model.dto.response.PageResponse;
@@ -142,6 +143,4 @@ public class DoctorController {
             return ResponseEntity.badRequest().body(e.getMessage());
         }
     }
-
-
 }
