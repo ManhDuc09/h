@@ -32,7 +32,7 @@ const DashboardPage: React.FC = () => {
     {
       type: "bot",
       content:
-        "Xin chào! Tôi là trợ lý ảo của Family Health. Tôi có thể giúp gì cho bạn?",
+        "Xin chào! Tôi là trợ lý ảo của HSSK. Tôi có thể giúp gì cho bạn?",
     },
   ]);
   const [inputMessage, setInputMessage] = useState("");
@@ -168,7 +168,7 @@ const DashboardPage: React.FC = () => {
         title={
           <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
             <RobotOutlined style={{ fontSize: 20, color: "#1890ff" }} />
-            <span>Trợ lý ảo Family Health</span>
+            <span>Trợ lý ảo HSSK</span>
           </div>
         }
         open={chatbotOpen}
