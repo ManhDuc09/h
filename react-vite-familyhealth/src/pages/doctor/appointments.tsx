@@ -26,8 +26,6 @@ import {
 } from "@ant-design/icons";
 import { useAppDispatch, useAppSelector } from "../../redux/hooks";
 import { fetchDoctorAppointments, changeAppointmentStatus } from "../../redux/slice/appointmentSlice";
-import AppointmentDetailCard from "../../components/appointments/AppointmentDetailCard";
-import MedicalResultModal from "../../components/appointments/MedicalResultModal";
 import type { IAppointment } from "../../types/health";
 import dayjs, { type Dayjs } from "dayjs";
 
@@ -126,10 +124,10 @@ const DoctorAppointments: React.FC = () => {
                   item.status === "SCHEDULED" || item.status === "pending"
                     ? "warning"
                     : item.status === "CONFIRMED" || item.status === "confirmed"
-                    ? "success"
-                    : item.status === "COMPLETED" || item.status === "completed"
-                    ? "default"
-                    : "error"
+                      ? "success"
+                      : item.status === "COMPLETED" || item.status === "completed"
+                        ? "default"
+                        : "error"
                 }
                 text={
                   <Text
@@ -153,9 +151,9 @@ const DoctorAppointments: React.FC = () => {
     if (filterStatus === 'all') return true;
     // Support both new and legacy status values
     const normalizedStatus = a.status.toUpperCase();
-    return normalizedStatus === filterStatus || 
-           (filterStatus === 'SCHEDULED' && normalizedStatus === 'PENDING') ||
-           (filterStatus === 'CONFIRMED' && normalizedStatus === 'CONFIRMED');
+    return normalizedStatus === filterStatus ||
+      (filterStatus === 'SCHEDULED' && normalizedStatus === 'PENDING') ||
+      (filterStatus === 'CONFIRMED' && normalizedStatus === 'CONFIRMED');
   });
 
   // Get appointments for selected date
@@ -551,12 +549,7 @@ const DoctorAppointments: React.FC = () => {
           </Space>
         }
       >
-        {selectedAppointment && (
-          <AppointmentDetailCard
-            appointment={selectedAppointment}
-            onUpdateStatus={handleUpdateStatus}
-          />
-        )}
+
       </Modal>
 
       {/* Medical Result Modal */}

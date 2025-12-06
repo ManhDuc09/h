@@ -1,12 +1,12 @@
 import React, { useEffect, useState } from 'react';
-import { 
-  Card, 
-  Table, 
-  Button, 
-  Space, 
-  Tag, 
-  Modal, 
-  Descriptions, 
+import {
+  Card,
+  Table,
+  Button,
+  Space,
+  Tag,
+  Modal,
+  Descriptions,
   Timeline,
   Empty,
   Spin,
@@ -69,13 +69,13 @@ const MedicalRecordsPage: React.FC = () => {
           'Authorization': `Bearer ${localStorage.getItem('access_token') || ''}`
         }
       });
-      
+
       if (!response.ok) {
         throw new Error('Failed to load medical records');
       }
-      
+
       const data = await response.json();
-      
+
       if (data.code === 200 && data.data) {
         // Update selected member với thông tin đầy đủ
         setSelectedMember(prev => prev ? {
@@ -87,7 +87,7 @@ const MedicalRecordsPage: React.FC = () => {
           email: data.data.email,
           bhyt: data.data.bhyt
         } : prev);
-        
+
         // Convert medical results sang format IAppointment để tương thích với UI
         const convertedAppointments: IAppointment[] = data.data.medicalResults.map((result: any) => ({
           id: result.id,
@@ -116,7 +116,7 @@ const MedicalRecordsPage: React.FC = () => {
             expertise: ''
           }
         }));
-        
+
         setMemberAppointments(convertedAppointments);
       }
     } catch (error) {
@@ -135,7 +135,7 @@ const MedicalRecordsPage: React.FC = () => {
 
   const handleExportReport = async () => {
     if (!selectedMember) return;
-    
+
     if (!exportDirectory.trim()) {
       message.error('Vui lòng nhập đường dẫn thư mục');
       return;
@@ -158,7 +158,7 @@ const MedicalRecordsPage: React.FC = () => {
       }
 
       const result = await response.json();
-      
+
       if (result.code === 200) {
         message.success(`Xuất báo cáo thành công! File đã được lưu tại: ${exportDirectory}`);
       } else {
@@ -167,7 +167,7 @@ const MedicalRecordsPage: React.FC = () => {
     } catch (error: any) {
       console.error('Export error:', error);
       const errorMessage = error?.message || 'Unknown error';
-      
+
       if (errorMessage.includes('UUID') || errorMessage.includes('template')) {
         message.error({
           content: 'Lỗi template báo cáo. Vui lòng liên hệ quản trị viên để cập nhật template.',
@@ -352,42 +352,10 @@ const MedicalRecordsPage: React.FC = () => {
               </Space>
             </Card>
 
-            {/* Statistics */}
-            <Row gutter={16} style={{ marginBottom: 16 }}>
-              <Col span={8}>
-                <Card>
-                  <Statistic
-                    title="Tổng lượt khám"
-                    value={totalAppointments}
-                    prefix={<CalendarOutlined />}
-                    valueStyle={{ color: '#1890ff' }}
-                  />
-                </Card>
-              </Col>
-              <Col span={8}>
-                <Card>
-                  <Statistic
-                    title="Đã hoàn thành"
-                    value={completedAppointments.length}
-                    prefix={<MedicineBoxOutlined />}
-                    valueStyle={{ color: '#52c41a' }}
-                  />
-                </Card>
-              </Col>
-              <Col span={8}>
-                <Card>
-                  <Statistic
-                    title="Sắp tới"
-                    value={upcomingAppointments}
-                    prefix={<HistoryOutlined />}
-                    valueStyle={{ color: '#faad14' }}
-                  />
-                </Card>
-              </Col>
-            </Row>
+
 
             {/* Appointment History */}
-            <Card 
+            <Card
               title={
                 <Space>
                   <HistoryOutlined />
@@ -403,30 +371,20 @@ const MedicalRecordsPage: React.FC = () => {
               ) : memberAppointments.length > 0 ? (
                 <Timeline
                   items={memberAppointments
-                    .sort((a, b) => 
-                      dayjs(b.time || b.appointmentDate).valueOf() - 
+                    .sort((a, b) =>
+                      dayjs(b.time || b.appointmentDate).valueOf() -
                       dayjs(a.time || a.appointmentDate).valueOf()
                     )
                     .map((apt) => {
                       const aptDate = apt.time || apt.appointmentDate;
                       return {
-                        color: apt.status === 'COMPLETED' ? 'green' : 'blue',
                         children: (
                           <div>
-                            <div style={{ marginBottom: 8 }}>
-                              <Tag color={getStatusColor(apt.status)}>
-                                {getStatusText(apt.status)}
-                              </Tag>
-                              <span style={{ fontWeight: 600 }}>
-                                {dayjs(aptDate).format('DD/MM/YYYY HH:mm')}
-                              </span>
-                            </div>
+
                             <div style={{ marginBottom: 4 }}>
                               <strong>Bác sĩ:</strong> {apt.doctor?.fullName || apt.doctorName || 'N/A'}
                             </div>
-                            <div style={{ marginBottom: 4 }}>
-                              <strong>Địa điểm:</strong> {apt.location || 'N/A'}
-                            </div>
+
                             {apt.status === 'COMPLETED' && apt.medicalResult && (
                               <Card size="small" style={{ marginTop: 8, backgroundColor: '#f0f9ff' }}>
                                 <div style={{ marginBottom: 4 }}>
